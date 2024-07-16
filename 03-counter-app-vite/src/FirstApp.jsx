@@ -13,7 +13,7 @@ const FirstApp = ({ user, text, age }) => {
 
     return (
         <>
-            <b>{ newMessage.user } ({ newMessage.age }):</b>
+            <b data-testid='test-title'>{ newMessage.user } ({ newMessage.age }):</b>
             <p>{ newMessage.text }</p>
         </>
     );
@@ -27,8 +27,7 @@ FirstApp.propTypes = {
 
 // Not mandatory.
 FirstApp.defaultProps = {
-    user: 'Anonymous',
-    text: '',
+    text: 'No text',
     age: 0
 }
 
