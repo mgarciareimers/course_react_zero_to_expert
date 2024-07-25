@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-export default (addCategory) => {
+export default ({ addCategory }) => {
     const [ value, setValue ] = useState('');
 
     // Update value.
