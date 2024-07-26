@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types'
 
-export default ({ addCategory }) => {
+const AddCategory = ({ addCategory }) => {
     const [ value, setValue ] = useState('');
 
     // Update value.
@@ -31,3 +32,9 @@ export default ({ addCategory }) => {
         </form>
     );
 }
+
+AddCategory.propTypes = {
+    addCategory: PropTypes.func.isRequired
+}
+
+export default AddCategory;
