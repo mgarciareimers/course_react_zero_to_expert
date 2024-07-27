@@ -1,7 +1,12 @@
 body {
+    background: #2c2c2c;
     padding: 20px;
 }
 
 button {
     margin-right: 10px;
+}
+
+h1, h2, h3,h4, h5, p, b, i {
+    color: white;
 }
