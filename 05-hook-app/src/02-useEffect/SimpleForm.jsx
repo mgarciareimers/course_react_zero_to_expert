@@ -54,7 +54,7 @@ const SimpleForm = () => {
             />
 
             {
-                (username === 'usuario2') && <Message />
+                (username.includes('usuario2')) && <Message />
             }
         </>
     );
