@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useForm = (initialFormValue = {}) => {
+export default (initialFormValue = {}) => {
     const [ formState, setFormState ] = useState(initialFormValue);
 
     const onInputChanged = ({ target }) => {
