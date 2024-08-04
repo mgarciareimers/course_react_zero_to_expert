@@ -2,7 +2,7 @@ import React from 'react';
 import { useCounter, useFetch } from '../hooks';
 import { LoadingMessage, PokemonCard } from '../03-examples';
 
-const MultipleCustomHooks = () => {
+const Layout = () => {
     const { counter, add, subtract } = useCounter(1);
 
     const { data, hasError, isLoading } = useFetch(`https://pokeapi.co/api/v2/pokemon/${ counter }`);
@@ -37,4 +37,4 @@ const MultipleCustomHooks = () => {
     );
 }
 
-export default MultipleCustomHooks;
+export default Layout;
