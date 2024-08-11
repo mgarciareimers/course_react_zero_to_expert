@@ -1,34 +1,58 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import todoReducer from './todo-reducer';
+import TodoList from './TodoList';
+import { TodoAdd } from './TodoAdd';
 
-const initialState = [
-    {
-        id: new Date().getTime(),
-        description: 'Recolectar la piedra del Alma',
-        done: false
-    },
-    {
-        id: new Date().getTime() * 3,
-        description: 'Recolectar la piedra del Alma',
-        done: false
-    }
-];
+const initialState = [];
 
+const init = () => {
+    return JSON.parse(localStorage.getItem('todos')) || [];
+}
 
 const TodoApp = () => {
+    const [ todos, dispatch ] = useReducer(todoReducer, initialState, init);
 
-    const [ todos, dispatch ] = useReducer(todoReducer, initialState);
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }, [ todos ])
+    
+
+    const addNewTask = (newTask) => {
+        dispatch({
+            type: 'add',
+            payload: newTask
+        });
+    }
+
+    const deleteTask = (task) => {
+        dispatch({
+            type: 'delete',
+            payload: task
+        });
+    }
 
     return (
         <>
-            <h1>Todo App</h1>
+            <h1>Todo App ({ todos.length }), <small>Pending: 2</small></h1>
             <hr />
 
-            <ul>
-                <li>Item 1</li>
-                <li>Item 2</li>
-                <li>Item 3</li>
-            </ul>
+            <div className='row'>
+                <div className='col-7'>
+                    <TodoList
+                        todoList={ todos } 
+                        deleteTask={ deleteTask }
+                    />
+                </div>
+
+                <div className='col-5'>
+                    <h4>Add TODO task</h4>
+                    <hr />
+                
+                    <TodoAdd 
+                        addNewTask={ addNewTask }
+                    />
+                </div>
+            </div>
         </>
     );
 }
