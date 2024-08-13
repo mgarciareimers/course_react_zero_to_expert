@@ -10,3 +10,16 @@ button {
 h1, h2, h3,h4, h5, p, b, i, li {
     color: white;
 }
+
+hr {
+    border-color: white;
+}
+
+a {
+    margin-right: 5px;
+}
+
+pre {
+    padding: 10px;
+    background-color: white;
+}
