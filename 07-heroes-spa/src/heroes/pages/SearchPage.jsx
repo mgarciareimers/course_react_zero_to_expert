@@ -1,8 +1,30 @@
 import React from 'react';
+import queryString from 'query-string';
+
+import useForm from '../../hooks/useForm';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { getHeroesByName } from '../helpers';
 
 import { HeroListItem } from '../components';
 
 const SearchPage = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const { q = '' } = queryString.parse(location.search);
+
+    const { searchText, onInputChanged } = useForm({
+        searchText: q
+    });
+
+    const heroes = getHeroesByName(q);
+
+    const onSearchClicked = (event) => {
+        event.preventDefault();
+
+        navigate(`?q=${ searchText.trim().toLowerCase() }`);
+    }
+
     return (
         <>
             <h1>SearchPage</h1>
@@ -13,13 +35,15 @@ const SearchPage = () => {
                     <h4>Search</h4>
                     <hr />
 
-                    <form>
+                    <form onSubmit={ onSearchClicked }>
                         <input 
                             type='text'
                             placeholder='Search a hero'
                             className='form-control'
                             name='searchText'
                             autoComplete='off'
+                            value={ searchText }
+                            onChange={ onInputChanged }
                         />
 
                         <button className='btn btn-outline-primary mt-4'>
@@ -32,15 +56,26 @@ const SearchPage = () => {
                     <h4>Results</h4>
                     <hr />
 
-                    <div className='alert alert-primary'>
-                        Search a hero
-                    </div>
-
-                    <div className='alert alert-warning'>
-                        No results found
-                    </div>
+                    {
+                        q.length <= 0
+                            ? (
+                                <div className='alert alert-primary animate__animated animate__fadeIn'>
+                                    Search a hero
+                                </div>
+                            )
+                            : heroes.length <= 0
+                                ? (
+                                    <div className='alert alert-danger animate__animated animate__fadeIn'>
+                                        No hero with <b>{ q.length <= 0 ? '\"\"' : q }</b>
+                                    </div>
+                                )
+                                : <></>
+                    }
 
                     { /* <HeroListItem /> */ }
+                    {
+                        heroes.map((hero) => <HeroListItem key={ hero.id } hero={ hero } />)
+                    }
                 </div>
             </div>
         </>
