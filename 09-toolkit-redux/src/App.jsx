@@ -2,7 +2,7 @@ import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { increment } from './store/slices/counter';
+import { increment, decrement, incrementBy } from './store/slices/counter';
 
 
 function App() {
@@ -20,10 +20,14 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+
+      count is { counter }
+
       <div className='card'>
-        <button onClick={() => dispatch(increment())}>
-          count is { counter }
-        </button>
+        <button onClick={() => dispatch(increment())}>Incement</button>
+        <button onClick={() => dispatch(decrement())}>Decrement</button>
+        <button onClick={() => dispatch(incrementBy({ value: 2 }))}>Increment by 2</button>
+      
 
       </div>
     </>
