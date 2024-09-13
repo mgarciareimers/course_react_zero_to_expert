@@ -1,8 +1,24 @@
-import React from 'react';
-import { useGetTodosQuery } from './store/apis/todosApi';
+import React, { useState } from 'react';
+import { useGetTodosQuery, useGetTodoQuery } from './store/apis';
 
 const TodoApp = () => {
-    const { data: list, error, isLoading }  = useGetTodosQuery();
+
+    const [ todoId, setTodoId ] = useState(1)
+
+    //const { data: list, error, isLoading }  = useGetTodosQuery();
+    const { data: todo, error, isLoading }  = useGetTodoQuery(todoId);
+
+    const onNextTodoButtonClicked = () => {
+        setTodoId(todoId + 1);
+    }
+
+    const onPreviousTodoButtonClicked = () => {
+        if (todoId <= 1) {
+            return;
+        }
+
+        setTodoId(todoId - 1);
+    }
 
     return (
         <>
@@ -11,21 +27,27 @@ const TodoApp = () => {
 
             <h4>isLoading: { isLoading ? 'True' : 'False' }</h4>
 
-            <pre>...</pre>
+            <pre>{ JSON.stringify(todo) }</pre>
 
-            <ul>
-                {
-                    list.map((item) => {
-                        return (
-                            <li><b>{ item.completed ? 'Done' : 'Pending' }</b> ${ item.title }</li>
-                        );
-                    })
-                }
-            </ul>
+            <button onClick={ onPreviousTodoButtonClicked }>
+                Previous
+            </button>
 
-            <button>
+            <button onClick={ onNextTodoButtonClicked }>
                 Next
             </button>
+
+            {/*
+                <ul>
+                    {
+                        list.map((item) => {
+                            return (
+                                <li><b>{ item.completed ? 'Done' : 'Pending' }</b> ${ item.title }</li>
+                            );
+                        })
+                    }
+                </ul>
+            */}
         </>
     );
 }
