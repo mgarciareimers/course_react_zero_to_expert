@@ -1,2 +1,2 @@
-export { default as loginThunk } from './loginThunk';
-export { default as startGoogleSignInThunk } from './startGoogleSignInThunk';
+export { default as execLogin } from './execLogin';
+export { default as execStartGoogleSignIn } from './execStartGoogleSignIn';

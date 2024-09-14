@@ -5,7 +5,7 @@ import { Button, Grid2, Link, TextField, Typography } from '@mui/material';
 import AuthLayout from '../layouts/AuthLayout';
 
 import { useForm } from '../../hooks';
-import { loginThunk, startGoogleSignInThunk } from '../../store/auth';
+import { execLogin, execStartGoogleSignIn } from '../../store/auth';
 import { useDispatch } from 'react-redux';
 
 const LoginPage = () => {
@@ -18,11 +18,11 @@ const LoginPage = () => {
 
     const onSubmitButtonClicked = (event) => {
         event.preventDefault();
-        dispatch(loginThunk(email, password));
+        dispatch(execLogin(email, password));
     }
 
     const onGoogleButtonClicked = () => {
-        dispatch(startGoogleSignInThunk());
+        dispatch(execStartGoogleSignIn());
     }
 
     return (
