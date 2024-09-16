@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Button, Grid2, Link, TextField, Typography } from '@mui/material';
 import AuthLayout from '../layouts/AuthLayout';
@@ -17,15 +17,20 @@ const formValidations = {
 }
 
 const SignUpPage = () => {
+    const [ formSubmitted, setFormSubmitted ] = useState(false);
+
     const { 
         name, email, password, 
-        nameValid, emailValid, passwordValid,
+        isFormValid, nameValidText, emailValidText, passwordValidText,
         onInputChange 
     } = useForm(initialFormData, formValidations);
 
     // Onclick methods.
     const onSubmitButtonClicked = (event) => {
         event.preventDefault();
+
+        setFormSubmitted(true);
+
         console.log(name, email, password);
         //dispatch(execSignUp(name, email, password));
     }
@@ -44,8 +49,8 @@ const SignUpPage = () => {
                             name='name'
                             value={ name } 
                             onInput={ onInputChange } 
-                            error={ !nameValid }
-                            helperText={ nameValid }
+                            error={ formSubmitted && !!nameValidText }
+                            helperText={ formSubmitted && nameValidText }
                         />
                     </Grid2>
 
@@ -58,6 +63,8 @@ const SignUpPage = () => {
                             name='email'
                             value={ email } 
                             onInput={ onInputChange } 
+                            error={ formSubmitted && !!emailValidText }
+                            helperText={ formSubmitted && emailValidText }
                         />
                     </Grid2>
 
@@ -69,6 +76,8 @@ const SignUpPage = () => {
                             name='password'
                             fullWidth value={ password }
                             onInput={ onInputChange }  
+                            error={ formSubmitted && !!passwordValidText }
+                            helperText={ formSubmitted && passwordValidText }
                         />
                     </Grid2>
 
