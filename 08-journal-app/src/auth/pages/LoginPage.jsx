@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Google } from '@mui/icons-material';
-import { Button, Grid2, Link, TextField, Typography } from '@mui/material';
+import { Alert, Button, Grid2, Link, TextField, Typography } from '@mui/material';
 import AuthLayout from '../layouts/AuthLayout';
 
 import { useForm } from '../../hooks';
@@ -13,18 +13,35 @@ const initialFormData = {
     password: ''
 };
 
+const formValidations = {
+    email: [ (value) => value.trim().includes('@'), 'The email format is not valid.' ],
+    password: [ (value) => value.trim().length >= 6, 'The number of characters in the password has to be greater or equal than 6.' ],
+}
+
 const LoginPage = () => {
     const dispatch = useDispatch();
 
-    const { status } = useSelector(state => state.auth);
+    const { 
+        email, password, 
+        isFormValid, emailValidText, passwordValidText,
+        onInputChange 
+    } = useForm(initialFormData, formValidations);
 
-    const { email, password, onInputChange } = useForm(initialFormData);
+    const [ formSubmitted, setFormSubmitted ] = useState(false);
+
+    const { status, errorMessage } = useSelector((state) => state.auth);
 
     const isAuthenticating = useMemo(() => status === 'checking', [ status ]);
 
     // Onclick methods.
     const onSubmitButtonClicked = (event) => {
         event.preventDefault();
+        setFormSubmitted(true);
+
+        if (!isFormValid) {
+            return;
+        }
+
         dispatch(execLogin(email, password));
     }
 
@@ -46,6 +63,8 @@ const LoginPage = () => {
                             name='email'
                             value={ email } 
                             onInput={ onInputChange } 
+                            error={ formSubmitted && !!emailValidText }
+                            helperText={ formSubmitted && emailValidText }
                         />
                     </Grid2>
 
@@ -57,12 +76,18 @@ const LoginPage = () => {
                             fullWidth
                             name='password'
                             value={ password } 
-                            onInput={ onInputChange }
+                            onInput={ onInputChange }  
+                            error={ formSubmitted && !!passwordValidText }
+                            helperText={ formSubmitted && passwordValidText }
                         />
                     </Grid2>
 
                     { /* Buttons */ }
                     <Grid2 container size={{ xs: 12 }} sx={{ mt: 2 }} spacing={ 2 }>
+                        <Grid2 size={{ xs: 12 }} display={ !!errorMessage ? '' : 'none' }>
+                            <Alert severity='error'>{ errorMessage }</Alert>
+                        </Grid2>
+
                         <Grid2 size={{ xs: 12, sm: 6 }}>
                             <Button variant='contained' fullWidth type='submit' disabled={ isAuthenticating }>
                                 <Typography sx={{ fontSize: '0.9rem' }}>Login</Typography>

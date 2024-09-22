@@ -7,7 +7,7 @@ const JournalRoutes = () => {
         <Routes>
             <Route path='/' element={ <HomePage /> } />
 
-            <Route path='/*' element={ <Navigate to='/' /> } />x
+            <Route path='/*' element={ <Navigate to='/' /> } />
         </Routes>
     );
 }
