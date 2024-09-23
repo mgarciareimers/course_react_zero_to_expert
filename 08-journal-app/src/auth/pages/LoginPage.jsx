@@ -51,7 +51,10 @@ const LoginPage = () => {
 
     return (
         <AuthLayout title='Login'>
-            <form onSubmit={ onSubmitButtonClicked }>
+            <form 
+                className='animate__animated animate__fadeIn animate__faster'
+                onSubmit={ onSubmitButtonClicked }
+            >
                 <Grid2 container>
                     { /* Inputs */ }
                     <Grid2 size={{ xs: 12 }} sx={{ mt: 2 }}>
