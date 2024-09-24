@@ -8,6 +8,5 @@ export default function execGetNotes() {
         const response = await getNotes(uid);
         
         dispatch(setNotes({ notes: response.notes }));
-
     };
 }
