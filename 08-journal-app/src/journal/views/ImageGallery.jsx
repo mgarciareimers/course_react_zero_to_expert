@@ -58,7 +58,7 @@ const ImageGallery = () => {
           {itemData.map((item) => (
             <ImageListItem key={ item.img }>
               <img
-                srcSet={ `${ item.img }?w=164&h=164&fit=crop&auto=format&dpr=2 2x` }
+                srcSet={ `${ item.img }?w=164&h=164&fit=crop&auto=format&dpr=2` }
                 src={ `${ item.img} ?w=164&h=164&fit=crop&auto=format` }
                 alt={ item.title }
                 loading='lazy'
