@@ -8,10 +8,15 @@ const getNotes = async (uid = '') => {
     const notes = [];
 
     docs.forEach((doc) => {
+        const data = doc.data();
+
+        if (data.imageUrls === undefined || data.imageUrls === null) {
+            data.imageUrls = [];
+        }
+
         notes.push({ 
             id: doc.id, 
-            ...doc.data(),
-            imageUrls: []
+            ...data
         });
     })
     

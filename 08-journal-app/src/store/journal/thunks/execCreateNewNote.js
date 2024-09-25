@@ -4,7 +4,7 @@ import { addNewEmptyNote, setActiveNote, setSaving } from '../journalSlice';
 
 export default function execCreateNewNote() {
     return async(dispatch, getState) => {
-        // Check if a noter is being saved.
+        // Check if a note is being saved.
         const { isSaving } = getState().journal;
 
         if (isSaving) {
@@ -19,6 +19,7 @@ export default function execCreateNewNote() {
         const note = {
             title: '',
             body: '',
+            imageUrls: [],
             date: new Date().getTime()
         }
         

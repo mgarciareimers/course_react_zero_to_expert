@@ -1,12 +1,17 @@
-import { SaveOutlined } from '@mui/icons-material';
-import { Button, Grid2, TextField, Typography } from '@mui/material';
-import React, { useMemo } from 'react';
+import { SaveOutlined, UploadOutlined } from '@mui/icons-material';
+import { Button, Grid2, IconButton, TextField, Typography } from '@mui/material';
+import React, { useEffect, useMemo, useRef } from 'react';
 import ImageGallery from './ImageGallery';
 import { useForm } from '../../hooks'; 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActiveNote } from '../../store/journal/journalSlice';
+import { execFilesUpload, execSaveNote } from '../../store/journal/thunks';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.css';
 
 export const NoteView = () => {
-    const { active : note } = useSelector((state) => state.journal);
+    const dispatch = useDispatch();
+    const { active : note, messageSaved, isSaving } = useSelector((state) => state.journal);
     
     const { title, body, date, imageUrls, onInputChange, formState } = useForm(note);
 
@@ -14,6 +19,34 @@ export const NoteView = () => {
         const newDate = new Date(date);
         return newDate.toUTCString();
     }, [ date ]);
+
+    const fileInputRef = useRef();
+
+    useEffect(() => {
+        dispatch(setActiveNote({ note: formState }));
+    }, [ formState ]);
+
+    useEffect(() => {
+        if (messageSaved.length <= 0) {
+            return;
+        }
+
+        Swal.fire('Note updated', messageSaved, 'success');
+    }, [ messageSaved ]);
+    
+
+    // Onclick methods.
+    const onSaveButtonClicked = () => {
+        dispatch(execSaveNote(formState));
+    }
+
+    const onFileInputChange = ({ target }) => {
+        if (target.files.length <= 0) {
+            return;
+        }
+
+        dispatch(execFilesUpload(target.files));
+    }
 
     return (
         <Grid2 container 
@@ -28,7 +61,28 @@ export const NoteView = () => {
                 </Grid2>
 
                 <Grid2>
-                    <Button color='primary' sx={{ padding: 2 }}>
+                    <input 
+                        ref={ fileInputRef }
+                        type='file'
+                        multiple
+                        onChange={ onFileInputChange }
+                        style={{ display: 'none' }}
+                    />
+
+                    <IconButton
+                        color='primary'
+                        disabled={ isSaving }
+                        onClick={ () => fileInputRef.current.click() }
+                    >
+                        <UploadOutlined />
+                    </IconButton>
+
+                    <Button 
+                        color='primary' 
+                        sx={{ padding: 2 }}
+                        disabled={ isSaving }
+                        onClick={ onSaveButtonClicked }
+                    >
                         <SaveOutlined sx={{ fontSize: '1.4rem', mr: 1 }} />
                         Save
                     </Button>
@@ -62,7 +116,7 @@ export const NoteView = () => {
                 </Grid2>
 
                 { /* Image gallery */ }
-                <ImageGallery />
+                <ImageGallery urls={ imageUrls } />
         </Grid2>
     );
 }

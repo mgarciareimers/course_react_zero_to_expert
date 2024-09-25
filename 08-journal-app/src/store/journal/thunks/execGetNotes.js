@@ -1,5 +1,5 @@
-import getNotes from "../../../helpers/getNotes";
-import { setNotes } from "../journalSlice";
+import getNotes from '../../../helpers/getNotes';
+import { setNotes } from '../journalSlice';
 
 export default function execGetNotes() {
     return async(dispatch, getState) => {
