@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import Modal from 'react-modal';
 import { addHours, differenceInSeconds } from 'date-fns';
@@ -8,6 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { useMemo } from 'react';
+import { useCalendarStore, useUiStore } from '../../hooks';
 
 const customStyles = {
     content: {
@@ -23,7 +24,9 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 const CalendarModal = () => {
-    const [ isOpen, setIsOpen ] = useState(true);
+    const { isDateModalOpen, closeDateModal } = useUiStore();
+    const { activeEvent, saveEvent } = useCalendarStore();
+
     const [ formSubmitted, setFormSubmitted ] = useState(false);
 
     const [ formValues, setFormValues ] = useState({
@@ -41,10 +44,17 @@ const CalendarModal = () => {
         return formValues.title.length > 0 ? '' : 'is-invalid';
     }, [ formValues.title, formSubmitted ]);
 
+    useEffect(() => {
+        if (activeEvent !== undefined && activeEvent !== null) {
+            setFormValues({ ...activeEvent });
+        }
+    }, [ activeEvent ]);
+    
+
     // Onclick methods.
     const onCloseModal = () => {
-        console.log('Closing modal');
-        setIsOpen(false)
+        closeDateModal();
+        setFormSubmitted(false);
     }
 
     const onInputChanged = ({ target }) => {
@@ -61,7 +71,7 @@ const CalendarModal = () => {
         })
     }
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
 
         if (formSubmitted) {
@@ -78,13 +88,14 @@ const CalendarModal = () => {
             return;
         }
 
-        console.log(formValues);
-
+        await saveEvent(formValues);
+        closeDateModal();
+        setFormSubmitted(false);
     }
 
     return (
         <Modal
-            isOpen={ isOpen }
+            isOpen={ isDateModalOpen }
             onRequestClose={ onCloseModal }
             style={ customStyles }
             className='modal'
