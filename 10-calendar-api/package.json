@@ -1,0 +1,17 @@
+{
+  "name": "10-calendar-api",
+  "version": "1.0.0",
+  "description": "Calendar web app API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "mgarciareimers",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "nodemon": "^3.1.7"
+  }
+}
