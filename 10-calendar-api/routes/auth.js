@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.status(200).json({
-        success: true,
-        route: 'auth'
-    });
-});
+const { login, renewToken, signUp } = require('../controllers/auth');
+const { authMiddlewares } = require('../middlewares');
+
+router.post('/login', authMiddlewares.login, login);
+router.post('/signup', authMiddlewares.signUp, signUp);
+
+router.get('/renewtoken', [], renewToken);
 
 module.exports = router;
