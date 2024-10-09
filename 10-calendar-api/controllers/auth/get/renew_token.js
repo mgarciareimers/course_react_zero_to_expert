@@ -17,7 +17,7 @@ const renewToken = async (req, res = response) => {
 
     res.json({
         success: true,
-        message: 'ok',
+        message: 'The token has been succesfully renewed.',
         data: {
             token: tokenResponse.data.token
         }

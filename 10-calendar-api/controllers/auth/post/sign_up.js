@@ -38,7 +38,7 @@ const signUp = async (req, res = response) => {
 
         res.status(201).json({
             success: true,
-            message: 'ok',
+            message: 'The account has been successfully created.',
             data: {
                 uid: user.id,
                 name: user.name,
