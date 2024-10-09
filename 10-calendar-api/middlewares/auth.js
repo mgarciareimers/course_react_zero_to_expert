@@ -1,5 +1,5 @@
 const { check } = require('express-validator');
-const { validateErrors } = require('./validator');
+const { validateErrors, validateJWT } = require('./validator');
 
 const login = [
     check('email', 'Email is mandatory.').isEmail(),
@@ -7,6 +7,10 @@ const login = [
     check('password', 'Password minimum length is 6.').isLength({ min: 6 }),
     validateErrors,
 ]
+
+const renewToken = [
+    validateJWT
+];
 
 const signUp = [
     check('name', 'Name is mandatory.').notEmpty(),
@@ -18,5 +22,6 @@ const signUp = [
 
 module.exports = {
     login,
+    renewToken,
     signUp,
 }

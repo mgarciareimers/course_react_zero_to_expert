@@ -1,9 +1,26 @@
 const { response } = require('express');
+const { generateJWT } = require('../../../helpers/jwt');
 
-const renewToken = (req, res = response) => {
+const renewToken = async (req, res = response) => {
+    const { uid } = req;
+
+    // Generate jwt.
+    const tokenResponse = await generateJWT(uid);
+
+    if (!tokenResponse.success) {
+        return res.status(500).json({
+            success: false,
+            message: tokenResponse.message,
+            data: null
+        });
+    }
+
     res.json({
         success: true,
         message: 'ok',
+        data: {
+            token: tokenResponse.data.token
+        }
     });
 }
 

@@ -7,6 +7,6 @@ const { authMiddlewares } = require('../middlewares');
 router.post('/login', authMiddlewares.login, login);
 router.post('/signup', authMiddlewares.signUp, signUp);
 
-router.get('/renewtoken', [], renewToken);
+router.get('/renewtoken', authMiddlewares.renewToken, renewToken);
 
 module.exports = router;
