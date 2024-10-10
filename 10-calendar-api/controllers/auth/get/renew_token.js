@@ -2,7 +2,7 @@ const { response } = require('express');
 const { generateJWT } = require('../../../helpers/jwt');
 
 const renewToken = async (req, res = response) => {
-    const { uid } = req;
+    const { uid, userName } = req;
 
     // Generate jwt.
     const tokenResponse = await generateJWT(uid);
@@ -19,7 +19,9 @@ const renewToken = async (req, res = response) => {
         success: true,
         message: 'The token has been succesfully renewed.',
         data: {
-            token: tokenResponse.data.token
+            token: tokenResponse.data.token,
+            uid,
+            name: userName
         }
     });
 }
